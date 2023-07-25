@@ -31,3 +31,17 @@ test("Should return 400 if no email is provider", () => {
   expect(httpResponse.statusCode).toBe(400);
   expect(httpResponse.body).toEqual(new MissingParamError("email"));
 });
+
+test("Should return 400 if no password is provider", () => {
+  const sut = new SignUpController();
+  const httpRequest = {
+    body: {
+      email: "email@email.com",
+      name: "name",
+      password_confirmation: "passwordd",
+    },
+  };
+  const httpResponse = sut.handle(httpRequest);
+  expect(httpResponse.statusCode).toBe(400);
+  expect(httpResponse.body).toEqual(new MissingParamError("password"));
+});
