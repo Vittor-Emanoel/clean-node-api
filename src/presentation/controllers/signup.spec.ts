@@ -98,3 +98,18 @@ test("Should return 400 if an invalid email is provider", () => {
   expect(httpResponse.statusCode).toBe(400);
   expect(httpResponse.body).toEqual(new InvalidParamError("email"));
 });
+
+test("Should call EmailValidation with correct email", () => {
+  const { sut, emailValidatorStub } = makeSut();
+  const isValidSpy = jest.spyOn(emailValidatorStub, "isValid");
+  const httpRequest = {
+    body: {
+      name: "name",
+      email: "invalid@email.com",
+      password: "passwordd",
+      password_confirmation: "passwordd",
+    },
+  };
+  sut.handle(httpRequest);
+  expect(isValidSpy).toHaveBeenCalledWith("invalid@email.com");
+});
